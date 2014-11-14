@@ -3,7 +3,7 @@ require 'rest-client'
 require 'simple_oauth'
 require 'json'
 
-module CloudSight
+module Cloudsight
 	BASE_URL = 'https://api.cloudsightapi.com'
 
 	class << self
@@ -36,7 +36,7 @@ module CloudSight
 
 	class Request
 		def self.send(options = {})
-			url = "#{CloudSight::base_url}/image_requests"
+			url = "#{Cloudsight::base_url}/image_requests"
 
 			params = {}
 			[:locale, :language, :latitude, :longitude, :altitude, :device_id, :ttl].each do |attr|
@@ -62,7 +62,7 @@ module CloudSight
 
 	class Response
 		def self.get(token, options = {})
-			url = "#{CloudSight::base_url}/image_responses/#{token}"
+			url = "#{Cloudsight::base_url}/image_responses/#{token}"
 
 			response = RestClient.get(url)
 			data = JSON.parse(response.body)
@@ -78,7 +78,7 @@ module CloudSight
 			data = nil
 			loop do
 				sleep options[:poll_wait]
-				data = CloudSight::Response.get(token, options)
+				data = Cloudsight::Response.get(token, options)
 				yield data if block_given?
 				break if data['status'] != 'not completed' and data['status'] != 'in progress'
 			end
