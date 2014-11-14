@@ -3,6 +3,13 @@ cloudsight-ruby
 
 A simple CloudSight API Client
 
+| Project                 |  Gem Release      |
+|------------------------ | ----------------- |
+| gem name                |  gem-release      |
+| license                 |  [MIT][license]   |
+| version                 |  [![Gem Version](https://badge.fury.io/rb/gem-release.png)](http://badge.fury.io/rb/gem-release) |
+| continuous integration  |  [![Build Status](https://secure.travis-ci.org/cloudsight/cloudsight-ruby.png?branch=master)](https://travis-ci.org/cloudsight/cloudsight-ruby) |
+
 Installation
 ============
 
