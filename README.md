@@ -3,6 +3,13 @@ cloudsight-ruby
 
 A simple CloudSight API Client
 
+Installation
+============
+
+``
+gem install cloudsight
+``
+
 Configuration
 =============
 
