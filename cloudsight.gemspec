@@ -1,3 +1,8 @@
+# encoding: utf-8
+
+$:.unshift File.expand_path('../lib', __FILE__)
+require 'cloudsight/version'
+
 Gem::Specification.new do |s|
   s.name        = 'cloudsight'
   s.version     = Cloudsight::VERSION
@@ -8,6 +13,7 @@ Gem::Specification.new do |s|
   s.email       = 'brad@cloudsightapi.com'
   s.homepage    = 'http://github.com/cloudsight/cloudsight-ruby'
 	s.license			= 'MIT'
+	s.platform    = Gem::Platform::RUBY
 
   s.files       = [
 		'lib/cloudsight.rb',
