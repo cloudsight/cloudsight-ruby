@@ -6,9 +6,9 @@ A simple CloudSight API Client
 Installation
 ============
 
-``
-gem install cloudsight
-``
+```
+$ gem install cloudsight
+```
 
 Configuration
 =============
