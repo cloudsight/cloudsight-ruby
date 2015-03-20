@@ -1,6 +1,10 @@
 require 'rubygems'
 require 'rest-client'
-require 'simple_oauth'
+begin
+	require 'simple_oauth'
+rescue LoadError => err
+	# Tolerate not having this unless it's actually configured
+end
 require 'json'
 
 module Cloudsight
@@ -8,6 +12,7 @@ module Cloudsight
 
 	class << self
 		def oauth_options=(val)
+			raise RuntimeError.new("Could not load the simple_oauth gem. Install it with `gem install simple_oauth`.") unless defined?(SimpleOAuth::Header)
 			@@oauth_options = val
 
 			RestClient.add_before_execution_proc do |req, params|
@@ -19,6 +24,17 @@ module Cloudsight
 				oauth = SimpleOAuth::Header.new(params[:method], params[:url], filtered_payload, oauth_options)
 			  req.add_field 'Authorization', oauth.to_s
 			end
+		end
+
+		def api_key=(val)
+			@@api_key = val
+			RestClient.add_before_execution_proc do |req, params|
+				req.add_field 'Authorization', "CloudSight #{val}"
+			end
+		end
+
+		def api_key
+			@@api_key
 		end
 
 		def oauth_options
