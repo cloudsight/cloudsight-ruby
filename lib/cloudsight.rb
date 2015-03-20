@@ -34,11 +34,11 @@ module Cloudsight
 		end
 
 		def api_key
-			@@api_key
+			@@api_key if defined?(@@api_key)
 		end
 
 		def oauth_options
-			@@oauth_options
+			@@oauth_options if defined?(@@oauth_options)
 		end
 
 		def base_url=(val)
@@ -52,6 +52,7 @@ module Cloudsight
 
 	class Request
 		def self.send(options = {})
+			raise RuntimeError.new("Need to define either oauth_options or api_key") unless Cloudsight.api_key || Cloudsight.oauth_options
 			url = "#{Cloudsight::base_url}/image_requests"
 
 			params = {}
