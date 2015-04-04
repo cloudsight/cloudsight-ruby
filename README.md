@@ -16,17 +16,33 @@ Installation
 $ gem install cloudsight
 ```
 
+Install the `simple_oauth` gem to use with oauth options.
+
+```
+$ gem install simple_oauth
+```
+
 Configuration
 =============
 
 ```ruby
 require 'rubygems'
+require 'simple_oauth'
 require 'cloudsight'
 
 Cloudsight.oauth_options = {
   consumer_key: 'REPLACE WITH YOUR KEY',
   consumer_secret: 'REPLACE WITH YOUR SECRET'
 }
+```
+
+or, using a single API key:
+
+```ruby
+require 'rubygems'
+require 'cloudsight'
+
+Cloudsight.api_key = 'REPLACE WITH YOUR KEY'
 ```
 
 Usage
