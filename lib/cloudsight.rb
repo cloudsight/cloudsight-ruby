@@ -13,6 +13,8 @@ module Cloudsight
 	class << self
 		def oauth_options=(val)
 			raise RuntimeError.new("Could not load the simple_oauth gem. Install it with `gem install simple_oauth`.") unless defined?(SimpleOAuth::Header)
+
+			val = val.inject({}) {|memo, (k, v)| memo[k.to_sym] = v; memo }
 			@@oauth_options = val
 
 			RestClient.add_before_execution_proc do |req, params|
