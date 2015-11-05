@@ -16,16 +16,6 @@ module Cloudsight
 
 			val = val.inject({}) {|memo, (k, v)| memo[k.to_sym] = v; memo }
 			@@oauth_options = val
-
-			RestClient.add_before_execution_proc do |req, params|
-				if params[:payload]
-					filtered_payload = params[:payload].dup
-					filtered_payload.delete('image_request[image]')
-				end
-
-				oauth = SimpleOAuth::Header.new(params[:method], params[:url], filtered_payload, oauth_options)
-			  req.add_field 'Authorization', oauth.to_s
-			end
 		end
 
 		def api_key=(val)
@@ -52,6 +42,27 @@ module Cloudsight
 		end
 	end
 
+	class Util
+		def self.wrap_request &block
+			RestClient.reset_before_execution_procs
+			RestClient.add_before_execution_proc do |req, params|
+				if params[:payload]
+					filtered_payload = params[:payload].dup
+					filtered_payload.delete('image_request[image]')
+				end
+
+				oauth = SimpleOAuth::Header.new(params[:method], params[:url], filtered_payload, Cloudsight.oauth_options)
+			  req.add_field 'Authorization', oauth.to_s
+			end
+
+			retval = yield
+
+			RestClient.reset_before_execution_procs
+
+			return retval
+		end
+	end
+
 	class Request
 		def self.send(options = {})
 			raise RuntimeError.new("Need to define either oauth_options or api_key") unless Cloudsight.api_key || Cloudsight.oauth_options
@@ -70,7 +81,7 @@ module Cloudsight
 			params['image_request[remote_image_url]'] = options[:url] if options.has_key?(:url)
 			params['image_request[image]'] = options[:file] if options.has_key?(:file)
 
-			response = RestClient.post(url, params)
+			response = Util.wrap_request { RestClient.post(url, params) }
 			data = JSON.parse(response.body)
 			raise ResponseException.new(data['error']) if data['error']
 			raise UnexpectedResponseException.new(response.body) unless data['token']
@@ -83,7 +94,7 @@ module Cloudsight
 		def self.get(token, options = {})
 			url = "#{Cloudsight::base_url}/image_responses/#{token}"
 
-			response = RestClient.get(url)
+			response = Util.wrap_request { RestClient.get(url) }
 			data = JSON.parse(response.body)
 			raise ResponseException.new(data['error']) if data['error']
 			raise UnexpectedResponseException.new(response.body) unless data['status']
