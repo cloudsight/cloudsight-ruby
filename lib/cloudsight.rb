@@ -51,7 +51,7 @@ module Cloudsight
 					filtered_payload.delete('image_request[image]')
 				end
 
-				oauth = SimpleOAuth::Header.new(params[:method], params[:url], filtered_payload, Cloudsight.oauth_options)
+				oauth = SimpleOAuth::Header.new(params[:method], params[:url], filtered_payload, Cloudsight.oauth_options || {})
 			  req.add_field 'Authorization', oauth.to_s
 			end
 
