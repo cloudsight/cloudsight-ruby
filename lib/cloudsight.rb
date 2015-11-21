@@ -55,7 +55,11 @@ module Cloudsight
 			  req.add_field 'Authorization', oauth.to_s
 			end
 
-			retval = yield
+			begin
+				retval = yield
+			rescue RestClient::Exception => e
+				retval = e.response
+			end
 
 			RestClient.reset_before_execution_procs
 
