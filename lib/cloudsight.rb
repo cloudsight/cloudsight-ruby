@@ -92,6 +92,19 @@ module Cloudsight
 			
 			data
 		end
+
+		def self.repost(token, options = {})
+			url = "#{Cloudsight::base_url}/image_requests/#{token}/repost"
+
+			response = Util.wrap_request { RestClient.post(url, options) }
+			return true if response.code == 200 and response.body.to_s.strip.empty?
+
+			data = JSON.parse(response.body)
+			raise ResponseException.new(data['error']) if data['error']
+			raise UnexpectedResponseException.new(response.body) unless data['token']
+
+			data
+		end
 	end
 
 	class Response
