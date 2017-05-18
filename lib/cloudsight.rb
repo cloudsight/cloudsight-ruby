@@ -8,7 +8,7 @@ end
 require 'json'
 
 module Cloudsight
-	BASE_URL = 'https://api.cloudsightapi.com'
+	BASE_URL = 'https://api.cloudsight.ai'
 
 	class << self
 		def oauth_options=(val)
