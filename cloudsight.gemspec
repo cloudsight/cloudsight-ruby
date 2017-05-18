@@ -29,7 +29,6 @@ Gem::Specification.new do |s|
 
   s.add_dependency 'json'
   s.add_dependency 'rest-client', '~>1.6'
-  s.add_dependency 'simple_oauth'
 
   s.add_development_dependency 'bundler', '~> 1.6'
   s.add_development_dependency 'rake'
