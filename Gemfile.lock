@@ -4,27 +4,25 @@ PATH
     cloudsight (0.0.2)
       json
       rest-client (~> 1.6)
-      simple_oauth
 
 GEM
   remote: https://rubygems.org/
   specs:
-    domain_name (0.5.20170223)
+    domain_name (0.5.20170404)
       unf (>= 0.0.5, < 1.0.0)
     http-cookie (1.0.3)
       domain_name (~> 0.5)
-    json (2.0.3)
-    mime-types (1.25.1)
+    json (2.1.0)
+    mime-types (2.99.3)
     netrc (0.11.0)
-    rake (10.3.2)
+    rake (12.0.0)
     rest-client (1.8.0)
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 3.0)
       netrc (~> 0.7)
-    simple_oauth (0.3.1)
     unf (0.1.4)
       unf_ext
-    unf_ext (0.0.7.2)
+    unf_ext (0.0.7.4)
 
 PLATFORMS
   ruby
