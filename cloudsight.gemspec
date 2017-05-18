@@ -12,20 +12,25 @@ Gem::Specification.new do |s|
   s.authors     = ['Brad Folkens']
   s.email       = 'brad@cloudsightapi.com'
   s.homepage    = 'http://github.com/cloudsight/cloudsight-ruby'
-	s.license			= 'MIT'
-	s.platform    = Gem::Platform::RUBY
+  s.license			= 'MIT'
+  s.platform    = Gem::Platform::RUBY
 
   s.files       = [
-		'lib/cloudsight.rb',
-		'Gemfile',
-		'Gemfile.lock',
-		'MIT-LICENSE',
-		'README.md',
-		'cloudsight.gemspec'
-	]
-	s.require_paths = [%q{lib}]
+    'lib/cloudsight.rb',
+    'Gemfile',
+    'Gemfile.lock',
+    'MIT-LICENSE',
+    'README.md',
+    'cloudsight.gemspec'
+  ]
+  s.require_paths = [%q{lib}]
 
-	s.required_ruby_version = Gem::Requirement.new('>= 1.9.1')
-	s.add_development_dependency 'bundler', '~> 1.6'
-	s.add_development_dependency 'rake'
+  s.required_ruby_version = Gem::Requirement.new('>= 1.9.1')
+
+  s.add_dependency 'json'
+  s.add_dependency 'rest-client', '~>1.6'
+  s.add_dependency 'simple_oauth'
+
+  s.add_development_dependency 'bundler', '~> 1.6'
+  s.add_development_dependency 'rake'
 end
