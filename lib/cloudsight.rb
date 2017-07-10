@@ -20,9 +20,6 @@ module Cloudsight
 
 		def api_key=(val)
 			@@api_key = val
-			RestClient.add_before_execution_proc do |req, params|
-				req.add_field 'Authorization', "CloudSight #{val}"
-			end
 		end
 
 		def api_key
@@ -51,8 +48,12 @@ module Cloudsight
 					filtered_payload.delete('image_request[image]')
 				end
 
-				oauth = SimpleOAuth::Header.new(params[:method], params[:url], filtered_payload, Cloudsight.oauth_options || {})
-			  req.add_field 'Authorization', oauth.to_s
+        if Cloudsight.api_key
+          req.add_field 'Authorization', "CloudSight #{Cloudsight.api_key}"
+        else
+          oauth = SimpleOAuth::Header.new(params[:method], params[:url], filtered_payload, Cloudsight.oauth_options || {})
+          req.add_field 'Authorization', oauth.to_s
+        end
 			end
 
 			begin
