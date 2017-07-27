@@ -28,7 +28,7 @@ Gem::Specification.new do |s|
   s.required_ruby_version = Gem::Requirement.new('>= 1.9.1')
 
   s.add_dependency 'json'
-  s.add_dependency 'rest-client', '~>1.6'
+  s.add_dependency 'rest-client'
 
   s.add_development_dependency 'bundler', '~> 1.6'
   s.add_development_dependency 'rake'
