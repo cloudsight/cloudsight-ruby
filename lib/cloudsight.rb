@@ -40,31 +40,31 @@ module Cloudsight
   end
 
   class Util
-    def self.wrap_request &block
-      RestClient.reset_before_execution_procs
-      RestClient.add_before_execution_proc do |req, params|
-        if params[:payload]
-          filtered_payload = params[:payload].dup
-          filtered_payload.delete('image_request[image]')
-        end
+    def self.post(url, params, headers = {})
+      headers['Authorization'] = authorization_header(:post, url, params)
+      RestClient.post(url, params, headers)
+    rescue RestClient::Exception => e
+      e.response
+    end
 
-        if Cloudsight.api_key
-          req.add_field 'Authorization', "CloudSight #{Cloudsight.api_key}"
-        else
-          oauth = SimpleOAuth::Header.new(params[:method], params[:url], filtered_payload, Cloudsight.oauth_options || {})
-          req.add_field 'Authorization', oauth.to_s
-        end
+    def self.get(url, headers = {})
+      headers['Authorization'] = authorization_header(:get, url)
+      RestClient.get(url, headers)
+    rescue RestClient::Exception => e
+      e.response
+    end
+
+    def self.authorization_header(http_method, url, params = {})
+      if Cloudsight.api_key
+        "CloudSight #{Cloudsight.api_key}"
+      else
+        # Exclude image file when generating OAuth header
+        filtered_payload = params.dup
+        filtered_payload.delete('image_request[image]')
+
+        oauth = SimpleOAuth::Header.new(http_method, url, filtered_payload, Cloudsight.oauth_options || {})
+        oauth.to_s
       end
-
-      begin
-        retval = yield
-      rescue RestClient::Exception => e
-        retval = e.response
-      end
-
-      RestClient.reset_before_execution_procs
-
-      return retval
     end
   end
 
@@ -86,7 +86,7 @@ module Cloudsight
       params['image_request[remote_image_url]'] = options[:url] if options.has_key?(:url)
       params['image_request[image]'] = options[:file] if options.has_key?(:file)
 
-      response = Util.wrap_request { RestClient.post(url, params) }
+      response = Util.post(url, params)
       data = JSON.parse(response.body)
       raise ResponseException.new(data['error']) if data['error']
       raise UnexpectedResponseException.new(response.body) unless data['token']
@@ -97,7 +97,7 @@ module Cloudsight
     def self.repost(token, options = {})
       url = "#{Cloudsight::base_url}/image_requests/#{token}/repost"
 
-      response = Util.wrap_request { RestClient.post(url, options) }
+      response = Util.post(url, options)
       return true if response.code == 200 and response.body.to_s.strip.empty?
 
       data = JSON.parse(response.body)
@@ -112,7 +112,7 @@ module Cloudsight
     def self.get(token, options = {})
       url = "#{Cloudsight::base_url}/image_responses/#{token}"
 
-      response = Util.wrap_request { RestClient.get(url) }
+      response = Util.get(url)
       data = JSON.parse(response.body)
       raise ResponseException.new(data['error']) if data['error']
       raise UnexpectedResponseException.new(response.body) unless data['status']
