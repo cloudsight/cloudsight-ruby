@@ -6,11 +6,10 @@ require 'cloudsight/version'
 Gem::Specification.new do |s|
   s.name        = 'cloudsight'
   s.version     = Cloudsight::VERSION
-  s.date        = '2015-11-05'
   s.summary     = "CloudSight API Client"
   s.description = "A simple CloudSight API Client for Image Recognition"
-  s.authors     = ['Brad Folkens']
-  s.email       = 'brad@cloudsightapi.com'
+  s.authors     = ['Brad Folkens', 'Jack McCallum', 'Chris Weilemann']
+  s.email       = 'oss@cloudsight.ai'
   s.homepage    = 'http://github.com/cloudsight/cloudsight-ruby'
   s.license			= 'MIT'
   s.platform    = Gem::Platform::RUBY
@@ -27,9 +26,13 @@ Gem::Specification.new do |s|
 
   s.required_ruby_version = Gem::Requirement.new('>= 1.9.1')
 
-  s.add_dependency 'json'
-  s.add_dependency 'rest-client'
+  s.add_dependency 'json', '~> 2.1'
+  s.add_dependency 'rest-client', '~> 2.0'
 
   s.add_development_dependency 'bundler', '~> 1.6'
-  s.add_development_dependency 'rake'
+  s.add_development_dependency 'rake', '~> 12.0'
+  s.add_development_dependency 'rspec', '~> 3.6'
+  s.add_development_dependency 'pry', '~> 0.10'
+  s.add_development_dependency 'webmock', '~> 3.0'
+  s.add_development_dependency 'simple_oauth', '~> 0.3'
 end
