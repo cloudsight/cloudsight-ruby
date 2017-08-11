@@ -1,7 +1,9 @@
 language: ruby
 cache: bundler
 
-script: 'bundle exec rake'
+script:
+  - bundle exec rspec
+
 
 branches:
   only:
