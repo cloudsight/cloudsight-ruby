@@ -20,7 +20,7 @@ Gem::Specification.new do |s|
 
   s.require_paths = [%q{lib}]
 
-  s.required_ruby_version = Gem::Requirement.new('>= 1.9.1')
+  s.required_ruby_version = Gem::Requirement.new('>= 2.1')
 
   s.add_dependency 'json', '~> 2.1'
   s.add_dependency 'rest-client', '~> 2.0'
