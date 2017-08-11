@@ -8,8 +8,8 @@ Gem::Specification.new do |s|
   s.version     = Cloudsight::VERSION
   s.summary     = "CloudSight API Client"
   s.description = "A simple CloudSight API Client for Image Recognition"
-  s.authors     = ['Brad Folkens']
-  s.email       = 'brad@cloudsightapi.com'
+  s.authors     = ['Brad Folkens', 'Jack McCallum', 'Chris Weilemann']
+  s.email       = 'oss@cloudsight.ai'
   s.homepage    = 'http://github.com/cloudsight/cloudsight-ruby'
   s.license			= 'MIT'
   s.platform    = Gem::Platform::RUBY
