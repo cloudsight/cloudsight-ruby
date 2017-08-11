@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'simple_oauth'
 
-RSpec.describe Cloudsight::Util do
+RSpec.describe Cloudsight::Api do
 
   describe '#authorization_header' do
     context 'with an api_key' do
