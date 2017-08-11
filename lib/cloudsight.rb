@@ -28,9 +28,9 @@ module Cloudsight
     end
   end
 
-  require_relative './cloudsight/api'
-  require_relative './cloudsight/request'
-  require_relative './cloudsight/response'
+  require 'cloudsight/api'
+  require 'cloudsight/request'
+  require 'cloudsight/response'
 
   class ResponseException < Exception; end
   class UnexpectedResponseException < Exception; end
