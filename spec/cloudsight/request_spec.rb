@@ -72,7 +72,7 @@ RSpec.describe Cloudsight::Request do
       expect { described_class.send(params) }.to raise_error Cloudsight::ResponseException
     end
 
-    it 'responds correctly to a response exception error' do
+    it 'responds correctly to an unexpected response' do
       stub_post(
         path: '/image_requests',
         body: { "image_request"=>{ "locale"=>"en", "remote_image_url"=>"test_url" } },
@@ -110,7 +110,7 @@ RSpec.describe Cloudsight::Request do
       expect { described_class.repost('sample_token', params) }.to raise_error Cloudsight::ResponseException
     end
 
-    it 'responds correctly to a response exception error' do
+    it 'responds correctly to an unexpected response' do
       stub_post(
         path: '/image_requests/sample_token/repost',
         body: { "image_request"=>{ "locale"=>"en", "remote_image_url"=>"test_url" } },
