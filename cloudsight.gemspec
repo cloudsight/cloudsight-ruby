@@ -14,14 +14,10 @@ Gem::Specification.new do |s|
   s.license			= 'MIT'
   s.platform    = Gem::Platform::RUBY
 
-  s.files       = [
-    'lib/cloudsight.rb',
-    'Gemfile',
-    'Gemfile.lock',
-    'MIT-LICENSE',
-    'README.md',
-    'cloudsight.gemspec'
-  ]
+  s.files         = `git ls-files`.split($/)
+  s.executables   = s.files.grep(%r{^bin/}).map { |f| File.basename(f) }
+  s.test_files    = s.files.grep(%r{^(test|spec|features)/})
+
   s.require_paths = [%q{lib}]
 
   s.required_ruby_version = Gem::Requirement.new('>= 1.9.1')
