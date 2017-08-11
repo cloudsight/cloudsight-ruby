@@ -2,7 +2,7 @@ require 'rubygems'
 require 'rest-client'
 begin
   require 'simple_oauth'
-rescue LoadError => err
+rescue LoadError
   # Tolerate not having this unless it's actually configured
 end
 require 'json'
@@ -11,31 +11,20 @@ module Cloudsight
   BASE_URL = 'https://api.cloudsight.ai'
 
   class << self
+    FIELDS = %w(api_key oauth_options base_url)
+    attr_accessor(*FIELDS)
+
     def oauth_options=(val)
-      raise RuntimeError.new("Could not load the simple_oauth gem. Install it with `gem install simple_oauth`.") unless defined?(SimpleOAuth::Header)
+      raise RuntimeError.new(
+        "Could not load the simple_oauth gem. Install it with `gem install simple_oauth`."
+      ) unless defined?(SimpleOAuth::Header)
 
       val = val.inject({}) {|memo, (k, v)| memo[k.to_sym] = v; memo }
-      @@oauth_options = val
-    end
-
-    def api_key=(val)
-      @@api_key = val
-    end
-
-    def api_key
-      @@api_key if defined?(@@api_key)
-    end
-
-    def oauth_options
-      @@oauth_options if defined?(@@oauth_options)
-    end
-
-    def base_url=(val)
-      @@base_url = val
+      @oauth_options = val
     end
 
     def base_url
-      @@base_url ||= BASE_URL
+      @base_url ||= BASE_URL
     end
   end
 
@@ -73,6 +62,16 @@ module Cloudsight
       raise RuntimeError.new("Need to define either oauth_options or api_key") unless Cloudsight.api_key || Cloudsight.oauth_options
       url = "#{Cloudsight::base_url}/image_requests"
 
+      params = construct_params(options)
+      response = Util.post(url, params)
+      data = JSON.parse(response.body)
+      raise ResponseException.new(data['error']) if data['error']
+      raise UnexpectedResponseException.new(response.body) unless data['token']
+
+      data
+    end
+
+    def self.construct_params(options)
       params = {}
       [:locale, :language, :latitude, :longitude, :altitude, :device_id, :ttl].each do |attr|
         params["image_request[#{attr}]"] = options[attr] if options.has_key?(attr)
@@ -85,13 +84,7 @@ module Cloudsight
 
       params['image_request[remote_image_url]'] = options[:url] if options.has_key?(:url)
       params['image_request[image]'] = options[:file] if options.has_key?(:file)
-
-      response = Util.post(url, params)
-      data = JSON.parse(response.body)
-      raise ResponseException.new(data['error']) if data['error']
-      raise UnexpectedResponseException.new(response.body) unless data['token']
-
-      data
+      params
     end
 
     def self.repost(token, options = {})

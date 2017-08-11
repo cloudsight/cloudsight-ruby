@@ -1,6 +1,7 @@
 require 'bundler/setup'
 require 'cloudsight'
 require 'webmock/rspec'
+require 'pry'
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
@@ -12,10 +13,27 @@ RSpec.configure do |config|
   config.expect_with :rspec do |c|
     c.syntax = :expect
   end
+
+  config.after(:each) do
+    Cloudsight.api_key       = nil
+    Cloudsight.oauth_options = {}
+    Cloudsight.base_url      = nil
+  end
+
 end
 
 def stub_get(path:, response:, status: 200, message: nil)
-  stub_request(:get, BingCognitiveSearch::Client::BING_BASE_URL + path).to_return(
+  stub_request(:get, Cloudsight::BASE_URL + path).to_return(
+    status: status,
+    body: response,
+    exception: message
+  )
+end
+
+def stub_post(path:, body: {}, response: {}, status: 200, message: nil)
+  stub_request(:post, Cloudsight::BASE_URL + path).with(
+    body: hash_including(body)
+  ).to_return(
     status: status,
     body: response,
     exception: message
