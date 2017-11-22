@@ -3,7 +3,7 @@ module Cloudsight
     class << self
       def send(options = {})
         raise RuntimeError.new("Need to define either oauth_options or api_key") unless Cloudsight.api_key || Cloudsight.oauth_options
-        url = "#{Cloudsight::base_url}/image_requests"
+        url = "#{Cloudsight::base_url}/v1/images"
 
         params = construct_params(options)
         response = Api.post(url, params)
@@ -15,7 +15,7 @@ module Cloudsight
       end
 
       def repost(token, options = {})
-        url = "#{Cloudsight::base_url}/image_requests/#{token}/repost"
+        url = "#{Cloudsight::base_url}/v1/images/#{token}/repost"
 
         response = Api.post(url, options)
         return true if response.code == 200 and response.body.to_s.strip.empty?
@@ -29,17 +29,17 @@ module Cloudsight
 
       def construct_params(options)
         params = {}
-        [:locale, :language, :latitude, :longitude, :altitude, :device_id, :ttl].each do |attr|
-          params["image_request[#{attr}]"] = options[attr] if options.has_key?(attr)
+        [:locale, :language, :latitude, :longitude, :altitude, :device_id, :ttl, :focus_x, :focus_y].each do |attr|
+          params[attr.to_s] = options[attr] if options.has_key?(attr)
         end
 
         if options[:focus]
-          params['focus[x]'] = options[:focus][:x]
-          params['focus[y]'] = options[:focus][:y]
+          params['focus_x'] = options[:focus][:x]
+          params['focus_y'] = options[:focus][:y]
         end
 
-        params['image_request[remote_image_url]'] = options[:url] if options.has_key?(:url)
-        params['image_request[image]'] = options[:file] if options.has_key?(:file)
+        params['remote_image_url'] = options[:url] if options.has_key?(:url)
+        params['image'] = options[:file] if options.has_key?(:file)
         params
       end
     end
