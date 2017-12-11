@@ -8,7 +8,7 @@ RSpec.describe Cloudsight::Response do
   describe '#get' do
     it 'returns the proper result' do
       stub_get(
-        path: '/image_responses/sample_token',
+        path: '/v1/images/sample_token',
         response: fixture_file('completed_response.json')
       )
 
@@ -21,7 +21,7 @@ RSpec.describe Cloudsight::Response do
 
     it 'responds correctly to a response exception error' do
       stub_get(
-        path: '/image_responses/sample_token',
+        path: '/v1/images/sample_token',
         response: fixture_file('error_response.json')
       )
 
@@ -30,7 +30,7 @@ RSpec.describe Cloudsight::Response do
 
     it 'responds correctly to an unexpected response' do
       stub_get(
-        path: '/image_responses/sample_token',
+        path: '/v1/images/sample_token',
         response: fixture_file('unexpected_response.json')
       )
 
@@ -40,7 +40,7 @@ RSpec.describe Cloudsight::Response do
 
   describe '#retrieve' do
     it 'returns the proper result' do
-      stub_polling(3, 'image_request.json', 'completed_response.json', '/image_responses/sample_token')
+      stub_polling(3, 'image_request.json', 'completed_response.json', '/v1/images/sample_token')
 
       response = described_class.retrieve('sample_token', poll_wait: 0.01)
 
@@ -50,13 +50,13 @@ RSpec.describe Cloudsight::Response do
     end
 
     it 'responds correctly to a response exception error' do
-      stub_polling(3, 'image_request.json', 'error_response.json', '/image_responses/sample_token')
+      stub_polling(3, 'image_request.json', 'error_response.json', '/v1/images/sample_token')
 
       expect { described_class.retrieve('sample_token', poll_wait: 0.01) }.to raise_error Cloudsight::ResponseException
     end
 
     it 'responds correctly to an unexpected response' do
-      stub_polling(3, 'image_request.json', 'unexpected_response.json', '/image_responses/sample_token')
+      stub_polling(3, 'image_request.json', 'unexpected_response.json', '/v1/images/sample_token')
 
       expect { described_class.retrieve('sample_token', poll_wait: 0.01) }.to raise_error Cloudsight::UnexpectedResponseException
     end

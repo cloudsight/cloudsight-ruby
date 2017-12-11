@@ -2,7 +2,7 @@ module Cloudsight
   class Response
     class << self
       def get(token, options = {})
-        url = "#{Cloudsight::base_url}/image_responses/#{token}"
+        url = "#{Cloudsight::base_url}/v1/images/#{token}"
 
         response = Api.get(url)
         data = JSON.parse(response.body)

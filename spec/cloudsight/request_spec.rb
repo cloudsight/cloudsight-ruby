@@ -29,17 +29,17 @@ RSpec.describe Cloudsight::Request do
       options = described_class.construct_params(params)
       expect(options).to eq(
         {
-          'image_request[locale]' => 'en',
-          'image_request[language]' => 'en',
-          'image_request[latitude]' => '5',
-          'image_request[longitude]' => '5',
-          'image_request[altitude]' => '5',
-          'image_request[device_id]' => '5',
-          'image_request[ttl]' => '5',
-          'image_request[remote_image_url]' => 'test_url',
-          'image_request[image]' => 'test_file',
-          'focus[x]' => '5',
-          'focus[y]' => '5'
+          'locale' => 'en',
+          'language' => 'en',
+          'latitude' => '5',
+          'longitude' => '5',
+          'altitude' => '5',
+          'device_id' => '5',
+          'ttl' => '5',
+          'remote_image_url' => 'test_url',
+          'image' => 'test_file',
+          'focus_x' => '5',
+          'focus_y' => '5'
         }
       )
     end
@@ -50,8 +50,8 @@ RSpec.describe Cloudsight::Request do
 
     it 'returns the proper result' do
       stub_post(
-        path: '/image_requests',
-        body: { "image_request"=>{ "locale"=>"en", "remote_image_url"=>"test_url" } },
+        path: '/v1/images',
+        body: { "locale" => "en", "remote_image_url" => "test_url" },
         response: fixture_file('image_request.json')
       )
 
@@ -64,8 +64,8 @@ RSpec.describe Cloudsight::Request do
 
     it 'responds correctly to a response exception error' do
       stub_post(
-        path: '/image_requests',
-        body: { "image_request"=>{ "locale"=>"en", "remote_image_url"=>"test_url" } },
+        path: '/v1/images',
+        body: { "locale" => "en", "remote_image_url" => "test_url" },
         response: fixture_file('error_response.json')
       )
 
@@ -74,8 +74,8 @@ RSpec.describe Cloudsight::Request do
 
     it 'responds correctly to an unexpected response' do
       stub_post(
-        path: '/image_requests',
-        body: { "image_request"=>{ "locale"=>"en", "remote_image_url"=>"test_url" } },
+        path: '/v1/images',
+        body: { "locale" => "en", "remote_image_url" => "test_url" },
         response: fixture_file('unexpected_response.json')
       )
 
@@ -84,12 +84,12 @@ RSpec.describe Cloudsight::Request do
   end
 
   describe '#repost' do
-    let(:params) { { image_request: { locale: 'en', remote_image_url: 'test_url' } } }
+    let(:params) { { locale: 'en', remote_image_url: 'test_url' } }
 
     it 'returns the proper result' do
       stub_post(
-        path: '/image_requests/sample_token/repost',
-        body: { "image_request"=>{ "locale"=>"en", "remote_image_url"=>"test_url" } },
+        path: '/v1/images/sample_token/repost',
+        body: { "locale" => "en", "remote_image_url" => "test_url" },
         response: fixture_file('image_request.json')
       )
 
@@ -102,8 +102,8 @@ RSpec.describe Cloudsight::Request do
 
     it 'responds correctly to a response exception error' do
       stub_post(
-        path: '/image_requests/sample_token/repost',
-        body: { "image_request"=>{ "locale"=>"en", "remote_image_url"=>"test_url" } },
+        path: '/v1/images/sample_token/repost',
+        body: { "locale" => "en", "remote_image_url" => "test_url" },
         response: fixture_file('error_response.json')
       )
 
@@ -112,8 +112,8 @@ RSpec.describe Cloudsight::Request do
 
     it 'responds correctly to an unexpected response' do
       stub_post(
-        path: '/image_requests/sample_token/repost',
-        body: { "image_request"=>{ "locale"=>"en", "remote_image_url"=>"test_url" } },
+        path: '/v1/images/sample_token/repost',
+        body: { "locale" => "en", "remote_image_url" => "test_url" },
         response: fixture_file('unexpected_response.json')
       )
 

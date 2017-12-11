@@ -51,25 +51,25 @@ Usage
 Send the image request using a file:
 
 ```ruby
-requestData = Cloudsight::Request.send(locale: 'en', file: File.open('image.jpg'))
+request_data = Cloudsight::Request.send(locale: 'en', file: File.open('image.jpg'))
 ```
 
 Or, you can send the image request using a URL:
 
 ```ruby
-requestData = Cloudsight::Request.send(locale: 'en', url: 'http://www.google.com/images/srpr/logo11w.png')
+request_data = Cloudsight::Request.send(locale: 'en', url: 'http://www.google.com/images/srpr/logo11w.png')
 ```
 
 Then, use the token to retrieve the response:
 
 ```ruby
-responseData = Cloudsight::Response.get(requestData['token'])
+response_data = Cloudsight::Response.get(request_data['token'])
 ```
 
 You can also use the `retrieve` method which will poll for the response for you:
 
 ```ruby
-Cloudsight::Response.retrieve(requestData['token']) do |responseData|
-  p responseData
+Cloudsight::Response.retrieve(request_data['token']) do |response_data|
+  p response_data
 end
 ```
