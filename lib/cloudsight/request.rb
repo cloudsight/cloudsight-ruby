@@ -12,6 +12,9 @@ module Cloudsight
         raise UnexpectedResponseException.new(response.body) unless data['token']
 
         data
+
+      rescue JSON::ParserError
+        raise UnexpectedResponseException.new(response.body)
       end
 
       def repost(token, options = {})
@@ -25,6 +28,9 @@ module Cloudsight
         raise UnexpectedResponseException.new(response.body) unless data['token']
 
         data
+
+      rescue JSON::ParserError
+        raise UnexpectedResponseException.new(response.body)
       end
 
       def construct_params(options)
