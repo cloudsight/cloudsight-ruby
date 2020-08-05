@@ -10,6 +10,9 @@ module Cloudsight
         raise UnexpectedResponseException.new(response.body) unless data['status']
 
         data
+
+      rescue JSON::ParserError
+        raise UnexpectedResponseException.new(response.body)
       end
 
       def retrieve(token, options = {})
