@@ -36,6 +36,15 @@ RSpec.describe Cloudsight::Response do
 
       expect { described_class.get('sample_token') }.to raise_error Cloudsight::UnexpectedResponseException
     end
+
+    it 'responds correctly to an invalid JSON response' do
+      stub_get(
+        path: '/v1/images/sample_token',
+        response: fixture_file('invalid_json.json')
+      )
+
+      expect { described_class.get('sample_token') }.to raise_error Cloudsight::UnexpectedResponseException
+    end
   end
 
   describe '#retrieve' do
@@ -57,6 +66,12 @@ RSpec.describe Cloudsight::Response do
 
     it 'responds correctly to an unexpected response' do
       stub_polling(3, 'image_request.json', 'unexpected_response.json', '/v1/images/sample_token')
+
+      expect { described_class.retrieve('sample_token', poll_wait: 0.01) }.to raise_error Cloudsight::UnexpectedResponseException
+    end
+
+    it 'responds correctly to an invalid JSON response' do
+      stub_polling(3, 'image_request.json', 'invalid_json.json', '/v1/images/sample_token')
 
       expect { described_class.retrieve('sample_token', poll_wait: 0.01) }.to raise_error Cloudsight::UnexpectedResponseException
     end

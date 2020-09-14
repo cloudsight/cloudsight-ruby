@@ -55,7 +55,7 @@ RSpec.describe Cloudsight::Request do
         response: fixture_file('image_request.json')
       )
 
-      response = described_class.send(params) 
+      response = described_class.send(params)
 
       expect(response["token"]).to  eq "sample_token"
       expect(response["url"]).to    eq "https://example.com/image.jpg"
@@ -77,6 +77,16 @@ RSpec.describe Cloudsight::Request do
         path: '/v1/images',
         body: { "locale" => "en", "remote_image_url" => "test_url" },
         response: fixture_file('unexpected_response.json')
+      )
+
+      expect { described_class.send(params) }.to raise_error Cloudsight::UnexpectedResponseException
+    end
+
+    it 'responds correctly to an invalid JSON response' do
+      stub_post(
+        path: '/v1/images',
+        body: { "locale" => "en", "remote_image_url" => "test_url" },
+        response: fixture_file('invalid_json.json')
       )
 
       expect { described_class.send(params) }.to raise_error Cloudsight::UnexpectedResponseException
@@ -115,6 +125,16 @@ RSpec.describe Cloudsight::Request do
         path: '/v1/images/sample_token/repost',
         body: { "locale" => "en", "remote_image_url" => "test_url" },
         response: fixture_file('unexpected_response.json')
+      )
+
+      expect { described_class.repost('sample_token', params) }.to raise_error Cloudsight::UnexpectedResponseException
+    end
+
+    it 'responds correctly to an invalid JSON response' do
+      stub_post(
+        path: '/v1/images/sample_token/repost',
+        body: { "locale" => "en", "remote_image_url" => "test_url" },
+        response: fixture_file('invalid_json.json')
       )
 
       expect { described_class.repost('sample_token', params) }.to raise_error Cloudsight::UnexpectedResponseException
